@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>the MINIverse — a field manual about one (1) very good dog</title>
+  <meta name="description" content="You are now a small cream dog. Please conduct yourself accordingly. Roam the meadow, raid the vegetable market, read the signs, honor the fetch agreement." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23D4E64E%22/><path d=%22M18 22 Q50 50 18 78%22 fill=%22none%22 stroke=%22%23F6EBD7%22 stroke-width=%227%22/><path d=%22M82 22 Q50 50 82 78%22 fill=%22none%22 stroke=%22%23F6EBD7%22 stroke-width=%227%22/></svg>" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <canvas id="scene"></canvas>
+
+  <header class="masthead">
+    <h1>the <span>MINI</span>verse</h1>
+    <p>a website about one (1) very good dog</p>
+  </header>
+
+  <p class="hint" id="hint">WASD&nbsp;&nbsp;·&nbsp;&nbsp;SHIFT zoomies&nbsp;&nbsp;·&nbsp;&nbsp;SPACE bark</p>
+
+  <p class="zone-label" id="zone-label" hidden></p>
+  <p class="toast" id="toast" hidden></p>
+
+  <div class="corner-actions">
+    <button class="paper-btn" id="mute" aria-label="hush the universe" title="hush the universe"></button>
+    <button class="paper-btn" id="manual-btn" aria-label="open the field manual" title="field manual">?</button>
+  </div>
+
+  <div id="intro">
+    <div class="intro-sheet" role="dialog" aria-label="the MINIverse field manual">
+      <p class="intro-overline">Field Manual · First Edition</p>
+      <h2 class="intro-title">the <span>MINI</span>verse</h2>
+      <p class="intro-sub">You are now a small cream dog. Please conduct yourself accordingly.</p>
+      <hr class="intro-rule" />
+      <div class="intro-controls intro-keys">
+        <div class="intro-col">
+          <div class="keycap-cluster">
+            <span class="keycap">W</span>
+            <div class="keycap-row">
+              <span class="keycap">A</span><span class="keycap">S</span><span class="keycap">D</span>
+            </div>
+          </div>
+          <p class="intro-ctl-label">walk <span class="intro-ctl-sub">(arrows work too)</span></p>
+        </div>
+        <div class="intro-col intro-col-list">
+          <p class="intro-ctl-line"><span class="keycap keycap-pill">SHIFT</span> zoomies</p>
+          <p class="intro-ctl-line"><span class="keycap keycap-pill">SPACE</span> bark</p>
+        </div>
+      </div>
+      <div class="intro-controls intro-joy">
+        <svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <circle cx="24" cy="24" r="21" />
+          <line x1="24" y1="3" x2="24" y2="8" /><line x1="24" y1="40" x2="24" y2="45" />
+          <line x1="3" y1="24" x2="8" y2="24" /><line x1="40" y1="24" x2="45" y2="24" />
+          <circle cx="24" cy="24" r="9.5" />
+          <circle cx="24" cy="24" r="1.4" />
+        </svg>
+        <p class="intro-ctl-label">joystick to walk · big button to bark</p>
+      </div>
+      <p class="intro-note">read the signs — walk up to them; that's the whole trick.</p>
+      <p class="intro-begin">
+        <span class="if-fine">press any key to <b>begin</b></span><span class="if-coarse">tap anywhere to <b>begin</b></span>
+      </p>
+    </div>
+  </div>
+
+  <div id="appendix" hidden>
+    <div class="appendix-sheet" role="dialog" aria-label="field manual appendices">
+      <button class="close" id="appendix-close" aria-label="close the appendices">×</button>
+      <p class="intro-overline">Field Manual · Appendices</p>
+      <nav class="appendix-tabs" role="tablist">
+        <button class="appendix-tab active" data-tab="making" role="tab">A — the making of</button>
+        <button class="appendix-tab" data-tab="roadmap" role="tab">B — roadmap</button>
+        <button class="appendix-tab" data-tab="notes" role="tab">C — release notes</button>
+      </nav>
+
+      <section class="appendix-panel" data-panel="making">
+        <h3>How this universe was built</h3>
+        <p class="lede">One project manager. One AI pair. A small fleet of scoped AI agents. No hand-written code — and no unreviewed code either. The Miniverse is a working demonstration of a person <em>product-managing</em> software into existence: setting direction, writing briefs, drawing boundaries, reviewing everything, and sending work back when the tongue looked like a pancake.</p>
+
+        <h4>The team</h4>
+        <ul class="roster">
+          <li><b>The Director (human)</b> — product vision, references, taste, and quality control. Approved every visual against screenshots. Issued the pivotal correction of the project: <i>"the tongue is so out of place."</i></li>
+          <li><b>The Pair (Claude)</b> — orchestration and integration: turned direction into briefs, spun up agents, verified their work end-to-end in a live browser, and did the fine sculpting between drafts.</li>
+          <li><b>Design agent</b> — synthesized three reference sites into a full design spec: palette, typography, microcopy, and the "field manual" conceit you are reading right now.</li>
+          <li><b>Architecture agent</b> — read the whole codebase and produced the build plan: physics approach, module boundaries, and eight milestones that each left the site runnable.</li>
+          <li><b>Two builder agents</b> — one owned behavior (world, physics, driving), one owned presentation (this UI). Each got an explicit do-not-touch file list and a contract of interfaces that had to survive. Deviations had to be reported, not hidden.</li>
+        </ul>
+
+        <h4>The process, in eight releases</h4>
+        <ol class="timeline">
+          <li><b>Prototype on day one.</b> A design-board web page with palette, type, and a fake orbit demo — reviewed and approved before any 3D code existed.</li>
+          <li><b>Ship the smallest lovable thing.</b> A fluffy sculpture in space with three orbiting facts. Cute, and finished in one sitting.</li>
+          <li><b>Add verbs.</b> User feedback: "it's quite useless." Diagnosis: nothing to <em>do</em>. Fetch and feeding were built as the two highest-delight, zero-backend interactions.</li>
+          <li><b>Pivot on reference.</b> New inspiration (a drivable-car portfolio site) reframed the product: stop looking at the dog; <em>become</em> the dog.</li>
+          <li><b>Parallelize the thinking.</b> Design spec and technical plan were produced by two agents simultaneously — independent perspectives, one afternoon.</li>
+          <li><b>Serialize the building.</b> Behavior first, presentation second, with file-boundary contracts between them. One agent stalled mid-build; it was resumed from its last reported state rather than restarted, losing nothing.</li>
+          <li><b>Critique like it ships tomorrow.</b> A structured design review produced six prioritized fixes (mobile camera framing was the critical one). All six shipped in the next rebuild.</li>
+          <li><b>Iterate on taste.</b> Realistic proportions from reference images, then body smoothing, meadow depth, more grass, daylight. Every round: screenshot, feedback, adjustment — the loop a PM runs with any team.</li>
+        </ol>
+
+        <h4>Incidents & lessons</h4>
+        <ul class="incidents">
+          <li><b>The frozen world.</b> Hidden browser tabs pause animation, which silently froze automated tests. Fix: a deterministic <code>step()</code> seam so the simulation can be driven without the screen. <i>Lesson: if a system only moves when someone is watching, it cannot be tested.</i></li>
+          <li><b>The stalled agent.</b> A builder hit a timeout mid-milestone. Instead of restarting (and redoing finished work), it was resumed with a message anchored to its own last status report. <i>Lesson: recovery beats restart when the work is resumable — and status reports are what make work resumable.</i></li>
+          <li><b>The pancake.</b> Animation code hardcoded a measurement belonging to an older model of the dog; when the model changed, the tongue silently became enormous. <i>Lesson: contracts between systems must live in one place. Also: always look at the thing.</i></li>
+        </ul>
+
+        <h4>The paper trail</h4>
+        <p>Everything above is documented in real artifacts, the way a real product is: a design specification, an architecture plan, agent briefs with scope contracts, a persistent observation log of process improvements, and the telemetry in the corner of your screen. The dog is the demo; the discipline is the product.</p>
+        <p class="colophon">Built with Claude Code · direction, taste & QA: one (1) project manager · fur: 18 layers</p>
+      </section>
+
+      <section class="appendix-panel" data-panel="roadmap" hidden>
+        <h3>Planned expeditions</h3>
+        <p class="lede">A living roadmap, maintained the way roadmaps should be: honest about sequencing, sized by effort, and unashamed of the fact that everything on it is about a dog.</p>
+        <h4>Now — in the meadow today</h4>
+        <ul class="road">
+          <li><span class="chip">shipped</span> Drivable Mini, vegetable market, fetch court, specimen dossiers, drag-to-orbit camera, daylight meadow, persistent telemetry.</li>
+        </ul>
+        <h4>Next</h4>
+        <ul class="road">
+          <li><span class="chip">M</span> <b>Mini's day, live.</b> A status feed her human updates from a phone — mood, crimes committed, vegetables consumed — rendered as field-manual telemetry.</li>
+          <li><span class="chip">M</span> <b>Global good-dog telemetry.</b> One shared counter: every fetch and snack by every visitor, ever. The permanent record goes public.</li>
+          <li><span class="chip">S</span> <b>Photo constellations.</b> Real photos of Mini scattered through the world as discoverable collectibles.</li>
+        </ul>
+        <h4>Later</h4>
+        <ul class="road">
+          <li><span class="chip">L</span> <b>The guestbook meadow.</b> Visitors leave a treat and a note; each becomes a permanent object in the world. The Miniverse accretes mass from love.</li>
+          <li><span class="chip">L</span> <b>Talk to Mini.</b> An AI-powered conversation in which all answers eventually route back to vegetables.</li>
+          <li><span class="chip">L</span> <b>Hyper-real Mini.</b> A rigged, film-quality dog model. Under evaluation: the current Mini has charm the realistic one must beat, not merely replace.</li>
+        </ul>
+      </section>
+
+      <section class="appendix-panel" data-panel="notes" hidden>
+        <h3>Release notes</h3>
+        <p class="lede">All entries are real. Especially the pancake.</p>
+        <ul class="relnotes">
+          <li><span class="ver">v3.2</span><b>The Heaven Update.</b> The universe now takes place during the day. Clouds drift. The horizon glows. Grass blade count raised to 2,200 after stakeholder review ("not enough shards").</li>
+          <li><span class="ver">v3.1</span><b>Anatomy passes QA.</b> Mini's tongue is no longer a pancake. Her body is no longer three circles. You can now drag the camera and look her in the face, which we recommend.</li>
+          <li><span class="ver">v3.0</span><b>A real dog.</b> Realistic proportions, four articulated legs, an honest trot, white-tipped paws per the reference photo. Tennis balls reduced from beach-ball size following user research (n = 1).</li>
+          <li><span class="ver">v2.5</span><b>The endless meadow.</b> The floating island was retired. The meadow now continues indefinitely in all directions; the vegetable market opened for business; the emotional support lemon took a counter position at the Toy Annex.</li>
+          <li><span class="ver">v2.0</span><b>You are the dog now.</b> Complete rework: WASD driving, follow camera, physics, signposts, and the parchment field manual you are holding. Fetch became a contact sport.</li>
+          <li><span class="ver">v1.1</span><b>Verbs.</b> Throwable tennis ball with a chase-and-return contract; drag-to-feed bok choy; the squeaky lemon gained audio. First appearance of Good Dog Telemetry.</li>
+          <li><span class="ver">v1.0</span><b>A sculpture in space.</b> One fluffy dog, three orbiting facts, one very supportive photograph. The gravitational pull was already anomalous.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <div class="stats" id="stats">
+    <span class="stats-label">Good Dog Telemetry</span>
+    <div class="stat-row">
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+        <circle cx="8" cy="8" r="6.4" />
+        <path d="M2.1 5.5 Q6.9 6.9 10.5 2.1" />
+        <path d="M13.9 10.5 Q9.1 9.1 5.5 13.9" />
+      </svg>
+      <span class="stat-name">fetches</span>
+      <span class="stat-digit"><b id="stat-fetch">0</b></span>
+    </div>
+    <div class="stat-row">
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5.2 13.6 C4 11.4 4.3 9.6 5.6 7.9" />
+        <path d="M10.8 13.6 C12 11.4 11.7 9.6 10.4 7.9" />
+        <path d="M8 13.6 L8 8" />
+        <path d="M8 8 C5.6 7.2 5 4 8 2.4 C11 4 10.4 7.2 8 8 Z" />
+        <path d="M5.2 13.6 Q8 14.6 10.8 13.6" />
+      </svg>
+      <span class="stat-name">snacks</span>
+      <span class="stat-digit"><b id="stat-snack">0</b></span>
+    </div>
+  </div>
+
+  <aside class="dossier" id="dossier" aria-live="polite" hidden>
+    <button class="close" id="dossier-close" aria-label="close the dossier">×</button>
+    <span class="tag" id="dossier-tag"></span>
+    <h2 id="dossier-title"></h2>
+    <p class="body" id="dossier-body"></p>
+    <img id="dossier-img" src="/mini.jpg" alt="Mini, a fluffy cream-colored dog, smiling with her tongue out" hidden />
+    <div class="dossier-foot">
+      <span class="foot" id="dossier-foot"></span>
+      <button class="back" id="dossier-back">carry on</button>
+    </div>
+  </aside>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
