@@ -1,5 +1,7 @@
 # the MINIverse
 
+**Live: [jocelynchansw.github.io/miniverse](https://jocelynchansw.github.io/miniverse/)**
+
 A website about one (1) very good dog. **You are now a small cream dog.
 Please conduct yourself accordingly.**
 
