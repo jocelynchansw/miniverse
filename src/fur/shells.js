@@ -42,7 +42,7 @@ export function furShellMaterial(hex, t, opts = {}) {
   // blade mode (grass): thin tapered blades with a rich root→tip gradient and
   // large patchy hue variation, instead of round fur strands
   const blade = !!opts.blade;
-  const rootR = blade ? 0.38 : 0.47;
+  const rootR = blade ? 0.43 : 0.47; // fuller carpet coverage between 3D blades
   const tipR = blade ? 0.05 : 0.1;
   const key = `${hex}@${t.toFixed(4)}@${length}@${droop}@${sway}@${worldHash}@${worldDensity}@${blade}`;
   if (furShellCache.has(key)) return furShellCache.get(key);

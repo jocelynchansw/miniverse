@@ -15,7 +15,7 @@ export const CARPET_R = 55;
 // the dog once items fall more than RECYCLE_R behind
 const TUFTS = 190;
 const STONES = 30;
-const FLOWERS = 25;
+const FLOWERS = 80;
 const RECYCLE_R = 48;
 
 function annulusXZ(cx, cz, rMin, rMax, out) {
@@ -95,11 +95,29 @@ export function initField(scene, quality) {
     return im;
   }
 
-  // ---------- near-field 3D blades: real geometry where the camera looks ----------
-  // one InstancedMesh of thin vertex-gradient blades, recycled tightly around
-  // the dog — gives the carpet genuine depth up close
+  // ---------- 3D blades everywhere: clumps of three, one draw call ----------
+  // each instance is a small clump (×3 blades), recycled around the dog so
+  // the whole visible meadow is genuinely made of grass blades
   {
-    const bladeGeo = new THREE.ConeGeometry(0.016, 1, 4).translate(0, 0.5, 0);
+    const BLADES = quality?.bladeClumps ?? 9000;
+    const oneBlade = () => new THREE.ConeGeometry(0.016, 1, 4).translate(0, 0.5, 0);
+    const bladeGeo = mergeGeometries([
+      oneBlade(),
+      oneBlade().applyMatrix4(
+        new THREE.Matrix4().compose(
+          new THREE.Vector3(0.05, 0, 0.02),
+          new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, 0.28)),
+          new THREE.Vector3(1, 0.85, 1)
+        )
+      ),
+      oneBlade().applyMatrix4(
+        new THREE.Matrix4().compose(
+          new THREE.Vector3(-0.04, 0, -0.03),
+          new THREE.Quaternion().setFromEuler(new THREE.Euler(0.1, 0, -0.24)),
+          new THREE.Vector3(1, 0.9, 1)
+        )
+      ),
+    ]);
     const pos = bladeGeo.attributes.position;
     const col = new Float32Array(pos.count * 3);
     const cRoot = new THREE.Color(0x4a6b42);
@@ -116,19 +134,19 @@ export function initField(scene, quality) {
     const blades = makeScatter(
       bladeGeo,
       new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, vertexColors: true }),
-      2200,
+      BLADES,
       (p, q, s) => {
         q.setFromEuler(
           _e2.set((Math.random() - 0.5) * 0.45, Math.random() * Math.PI * 2, (Math.random() - 0.5) * 0.45)
         );
         s.set(0.8 + Math.random() * 0.6, 0.22 + Math.random() * 0.34, 0.8 + Math.random() * 0.6);
       },
-      { rMin: 0.6, rMax: 22, recycleR: 24, respawnMin: 6, respawnMax: 23 }
+      { rMin: 0.6, rMax: 26, recycleR: 28, respawnMin: 8, respawnMax: 27 }
     );
-    // warm/cool per-blade tint like the shader's patches
+    // warm/cool per-clump tint like the shader's patches
     const warm = new THREE.Color(1.12, 1.05, 0.85);
     const cool = new THREE.Color(0.92, 1.05, 0.95);
-    for (let i = 0; i < 2200; i++) blades.setColorAt(i, Math.random() < 0.5 ? warm : cool);
+    for (let i = 0; i < BLADES; i++) blades.setColorAt(i, Math.random() < 0.5 ? warm : cool);
     blades.instanceColor.needsUpdate = true;
   }
 
@@ -198,22 +216,78 @@ export function initField(scene, quality) {
     }
   );
   {
-    const cream = new THREE.Color(C.cream);
-    const green = new THREE.Color(C.chartreuse);
+    // backyard bouquet: mostly white daisies, some buttercup yellow, a little pink
+    const white = new THREE.Color(0xfdfaf0);
+    const yellow = new THREE.Color(0xf4df7a);
+    const pink = new THREE.Color(0xf2b8c6);
     for (let i = 0; i < FLOWERS; i++) {
-      flowers.setColorAt(i, Math.random() < 0.28 ? green : cream);
+      const r = Math.random();
+      flowers.setColorAt(i, r < 0.55 ? white : r < 0.85 ? yellow : pink);
     }
     flowers.instanceColor.needsUpdate = true;
+  }
+
+  // ---------- backyard treeline: low-poly trees + bushes breathing in the haze ----------
+  {
+    const placed = (geo, x, y, z, sx, sy, sz) =>
+      geo.applyMatrix4(
+        new THREE.Matrix4().compose(
+          new THREE.Vector3(x, y, z),
+          new THREE.Quaternion(),
+          new THREE.Vector3(sx, sy ?? sx, sz ?? sx)
+        )
+      );
+    const folMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      roughness: 1,
+      vertexColors: true,
+    });
+    const treeGeo = mergeGeometries([
+      paintVerts(placed(new THREE.CylinderGeometry(0.09, 0.16, 1.5, 7), 0, 0.75, 0, 1), C.treeTrunk),
+      paintVerts(placed(new THREE.SphereGeometry(1, 10, 8), 0, 1.95, 0, 1.05, 0.9, 1.05), C.treeFoliage),
+      paintVerts(placed(new THREE.SphereGeometry(1, 10, 8), 0.55, 1.55, 0.15, 0.7, 0.6, 0.7), C.treeFoliageDark),
+      paintVerts(placed(new THREE.SphereGeometry(1, 10, 8), -0.5, 1.65, -0.2, 0.65, 0.55, 0.65), C.treeFoliage),
+    ]);
+    makeScatter(
+      treeGeo,
+      folMat,
+      26,
+      (p, q, s) => {
+        q.setFromEuler(_e.set(0, Math.random() * Math.PI * 2, 0));
+        s.setScalar(1.6 + Math.random() * 1.4);
+      },
+      { rMin: 28, rMax: 44, recycleR: 48, respawnMin: 30, respawnMax: 44 }
+    );
+    const bushGeo = mergeGeometries([
+      paintVerts(placed(new THREE.SphereGeometry(1, 9, 7), 0, 0.35, 0, 0.5, 0.4, 0.5), C.treeFoliage),
+      paintVerts(placed(new THREE.SphereGeometry(1, 9, 7), 0.35, 0.28, 0.1, 0.38, 0.3, 0.38), C.treeFoliageDark),
+      paintVerts(placed(new THREE.SphereGeometry(1, 9, 7), -0.32, 0.3, -0.08, 0.36, 0.3, 0.36), C.treeFoliage),
+    ]);
+    makeScatter(
+      bushGeo,
+      folMat,
+      34,
+      (p, q, s) => {
+        q.setFromEuler(_e.set(0, Math.random() * Math.PI * 2, 0));
+        s.setScalar(0.9 + Math.random() * 1.4);
+      },
+      { rMin: 14, rMax: 42, recycleR: 46, respawnMin: 18, respawnMax: 42 }
+    );
   }
 
   // ---------- per-frame follow + recycle ----------
   const _m = new THREE.Matrix4();
   const _p = new THREE.Vector3();
+  let tick = 0;
   function update(dogPos) {
     group.position.x = dogPos.x;
     group.position.z = dogPos.z;
     let dirtyTufts = false;
-    for (const it of scatterItems) {
+    // with ~10k scatter items, sweep 1/6 of them per frame — full coverage
+    // every ~100ms, far faster than anything can walk out of range
+    tick = (tick + 1) % 6;
+    for (let i = tick; i < scatterItems.length; i += 6) {
+      const it = scatterItems[i];
       it.mesh.getMatrixAt(it.index, _m);
       const dx = _m.elements[12] - dogPos.x;
       const dz = _m.elements[14] - dogPos.z;

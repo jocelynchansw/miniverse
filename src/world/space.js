@@ -40,9 +40,14 @@ export function initSpace(scene) {
       fragmentShader: `
         uniform vec3 cZenith; uniform vec3 cHorizon; varying vec3 vPos;
         void main(){
-          float h = normalize(vPos).y;
-          // wide creamy band at the horizon = the "heaven glow"
-          gl_FragColor = vec4(mix(cHorizon, cZenith, smoothstep(0.02, 0.5, h)), 1.0);
+          vec3 dir = normalize(vPos);
+          float h = dir.y;
+          vec3 col = mix(cHorizon, cZenith, smoothstep(0.02, 0.5, h));
+          // the sun: a bright disc + a broad warm halo, aligned with the key light
+          vec3 sunDir = normalize(vec3(5.0, 9.0, 4.0));
+          float s = max(dot(dir, sunDir), 0.0);
+          col += vec3(1.0, 0.96, 0.82) * (pow(s, 350.0) * 0.85 + pow(s, 8.0) * 0.14);
+          gl_FragColor = vec4(col, 1.0);
         }`,
     });
     skyGroup.add(new THREE.Mesh(geo, mat));

@@ -2,12 +2,15 @@
 export const C = {
   // sky / ground
   void: 0x211a34, // legacy UI token (dark glass pills still use it)
-  skyZenith: 0x9fc0ee, // soft heaven blue overhead
-  skyHorizon: 0xf3ecdc, // warm cream haze at the horizon; also fog
-  ground: 0x47653f, // deep grass green under and beyond the carpet
+  skyZenith: 0x8cbdf2, // sunny backyard blue overhead
+  skyHorizon: 0xf7f0da, // warm sunlit haze at the horizon; also fog
+  ground: 0x4b6a40, // deep grass green under and beyond the carpet
   stone: 0x8b937f, // warm grey-green field stones
   path: 0x9a8767, // warm trodden earth under the market booths
-  grass: 0x6ca464, // fresh sunlit meadow green
+  grass: 0x74aa62, // warm sunny meadow green
+  treeFoliage: 0x649e54, // backyard treeline
+  treeFoliageDark: 0x54894a,
+  treeTrunk: 0x7a6248,
 
   // stars & accents
   cream: 0xf6ebd7,

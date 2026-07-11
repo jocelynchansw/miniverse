@@ -23,7 +23,11 @@ import "./ui/dossier.js";
 import { resumeAudio, bark } from "./audio/sounds.js";
 
 // quality tier: coarse pointers get fewer fur shells + capped pixel ratio
-const quality = { dogShells: isCoarse ? 12 : 18, grassShells: isCoarse ? 7 : 12 };
+const quality = {
+  dogShells: isCoarse ? 12 : 18,
+  grassShells: isCoarse ? 7 : 12,
+  bladeClumps: isCoarse ? 3500 : 9000, // ×3 blades per clump
+};
 
 const space = initSpace(scene);
 const field = initField(scene, quality);
